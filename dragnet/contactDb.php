@@ -8,34 +8,28 @@ if($link === false){
 }
 // Escape user inputs for security
 
-if(isset($_POST['submit'])){
-    if(!empty($_POST['name']) && !empty($_POST['email']) && !empty($_POST['message'])){
-        
-        $name = $_POST['name'];
-        $email = $_POST['email'];
-        $message = $_POST['message'];
+if($_SERVER["REQUEST_METHOD"] == "POST"){
+    // echo 'Submitted';
+    $name = htmlspecialchars($_POST['name']);
+    $email = htmlspecialchars($_POST['email']);
+    $message = htmlspecialchars($_POST['message']);
 
-        
-        
-        $query = "INSERT into contacts(Name, Email, Message) VALUES('$name' , '$email' , '$message')";
-        
-        $run = mysqli_query($link,$query) or die(mysqli_error());
-
-        if($run){
-            echo "Message Sent Successfully";
-        }
-        else{
-            echo "Error Sending Message";
-        }
+    //Check Required Fields
+    if(empty($name) && empty($email) && empty($message)){
+         echo "Fill up all fields";
     }
-    else{
-        echo "all field required" ;
+        
+      else {
+    
+        $query = "INSERT INTO contacts(Name, Email, Message) VALUES ('$name', '$email', '$message')";
+    
+        mysqli_query($link, $query) or die(mysqli_error($link));
+    
+        echo "<p class='bg-success text-white m-2 p-3' style='font-size:16px; font-weight:400;'> Hi, <b>$name</b>. Your message was sent successfully<p>";
+    }
+    
     }
 
-}
-
-
- 
  
 // Close connection
 // mysqli_close($link);

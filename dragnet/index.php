@@ -26,7 +26,7 @@
           else {
             //passed
             // Recipient Email
-            $toEmail = 'achageorge25@gmail.com';
+            $toEmail = 'dragnetgroup@gmail.com';
             $subject = 'Contact Feedback From ' .$name;
             $body = '<html><body>';
             $body .= '<div style="width: 100%; height: 100%; align-items:center; background-color:black; color:white;"><h1 style="color:#f40; padding-left: 30px;">Feedback Form</h1>';
@@ -77,9 +77,10 @@
         <!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"> -->
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.min.css">
         <!-- Custom stylesheet - for your changes-->
-        
+        <link rel="stylesheet" type="text/css" href="css/style.css">
 
         <!-- -- font-awesome-- -->
+        <link rel="stylesheet" href="css/bootstrap.min.css">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css" type="text/css">
         <!-- Tweaks for older browsers-->
             <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -89,33 +90,6 @@
             <link rel="preconnect" href="https://fonts.googleapis.com">
             <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
             <link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
-
-
-            <script>
-function submitForm() {
-    // Creating the XMLHttpRequest object
-    var request = new XMLHttpRequest();
-    
-    // Instantiating the request object
-    request.open("POST", "subscribeDb.php");
-    
-    // Defining event listener for readystatechange event
-    request.onreadystatechange = function() {
-        // Check if the request is compete and was successful
-        if(this.readyState === 4 && this.status === 200) {
-            // Inserting the response from server into an HTML element
-            document.getElementById("nessage").innerHTML = this.responseText;
-        }
-    };
-    
-    // Retrieving the form data
-    var newsform = document.getElementById("newsform");
-    var formData = new FormData(newsform);
-
-    // Sending the request to the server
-    request.send(formData);
-}
-</script>
 
     <body>
 
@@ -228,13 +202,8 @@ And through the process the company is committed to your personal development th
         <a href="#"><i class="fa fa-whatsapp"></i></a>
     </div>
     </div>
-    <div class="col-10 mx-auto col-lg-5 contactBx container-fluid">
-      <?php if($msg != ""): ?>
-        <div class="alert <?php echo $msgClass; ?>"><?php echo $msg; ?></div>
-
-        <?php endif; ?>
-
-      <form action ="contactDb.php" method="POST" id="contactForm" class="p-5 border rounded-3 bg-light">
+  
+      <form method="POST" id="contactForm" class="p-5 border rounded-3 bg-light">
           <h4 class="text-primary text-center">Feedback Form</h4>
         <div class="form-floating mb-3">
         <input type="text" name="name" class="form-control" id="contactName" placeholder="Enter Full Name"> 
@@ -247,20 +216,16 @@ And through the process the company is committed to your personal development th
           value="<?php echo isset($_POST['email']) ? $email : ''; ?>
         ">
         </div>
-        <!--<div class="form-floating mb-3">-->
-        <!--  <input type="phone" name = "phone" class="form-control" id="contactPhone" placeholder="Enter Phone Number"-->
-        <!--  value="<?php echo isset($_POST['phone']) ? $phone : ''; ?>-->
-        <!--">-->
-        <!--</div>-->
+        
         <div class="form-floating mb-3"><textarea class="form-control" name = "message" id="contactText" placeholder="Enter your Message Here"
         value="<?php echo isset($_POST['message']) ? $message : ''; ?>
         "></textarea>
       </div>
     
         <div class="contactSubmit">
-        <input type="submit" class="w-100 btn btn-lg btn-primary" name="submit" value="Send a Message" id="submitBtn">
-        <span>Sending a Message</span>
+        <input type="button" class="w-100 btn btn-lg btn-primary" name="submit" value="Send a Message" id="submitBtn" onclick="contact()">
         </div>
+        <span id="feedResponse"></span>
 
 
         <hr class="my-4">
@@ -292,20 +257,22 @@ And through the process the company is committed to your personal development th
                     <!-- <div class="status"></div> -->
                 <div class="col-lg-4 col-md-6">
                 <!-- onsubmit="return doSubscribe();" -->
-                <span id="message"></span>
-                    <form method="POST" id="newsform">   
+                    <form method="POST" id="subForm">   
                     <h5>Subscribe to our Newsletter</h5>
                     <div class="d-grid gap-2 d-md-flex justify-content-md-start">
                     <input type="text" placeholder="Enter Full Name" name="name" id="name" class="col-6 mr-2 form-control form_data"> 
                     <span class="text-danger hidden" id="nameError"></span> 
                     <input type="email" placeholder="Enter Email" name="email" id="email" class="col-6 mr-2 form-control form_data">
-                    <!-- <span class="text-danger hidden" id="emailError"></span>   -->
+                    <span class="text-danger hidden" id="emailError"></span>  
                   </div>
               
                     <!-- <button type="button" class="btn btn-lg px-4 me-md-2 mt-2" id="subscribeBtn">Subscribe</button> -->
-                    <input type="submit" name="submit"  class="btn btn-lg px-4 me-md-2 mt-2"  id="submit" value="Subscribe" onclick="submitForm()">
+                    <input type="button" name="submit"  class="btn btn-lg px-4 me-md-2 mt-2"  id="submit" value="Subscribe" onclick="subscribe()">
                     <p class="mt-2 subPara">Subscribing to our Newsletter will help you know when we will officially launch our services...</p>
                     </form>
+                    <div id="messageBx">
+                    <p></p>
+                  </div>
                 </div>
                 <div class="col-lg-4 col-md-6">
                     <h5>Links</h5>
@@ -319,11 +286,11 @@ And through the process the company is committed to your personal development th
             </div>
         </div>
     </div>
-    <div class="py-3" id="lastfooter">
+    <div id="lastfooter">
         <div class="container">
             <div class="row">
                 <div class="col-md-7 text-center text-md-left">
-                    <p class="mb-md-0"> &copy; 2021 Dragnet Investment Limited. All rights reserved. </p>
+                    <p class="mb-md-0 py-2"> &copy; 2021 Dragnet Investment Limited. All rights reserved. </p>
                 </div>
                 <div class="col-md-5 text-center text-md-right">
                     <p class="mb-0"><a href="#" class="external text-white"></a> </p>
@@ -333,7 +300,55 @@ And through the process the company is committed to your personal development th
         </div>
 
         <!-- JavaScript -->
-        <script src ="js/script.js"></script>
+        <script>
+          function subscribe() {
+    // Creating the XMLHttpRequest object
+    var request = new XMLHttpRequest();
+    
+    // Instantiating the request object
+    request.open("POST", "subscribeDb.php");
+    
+    // Defining event listener for readystatechange event
+    request.onreadystatechange = function() {
+        // Check if the request is compete and was successful
+        if(this.readyState === 4 && this.status === 200) {
+            // Inserting the response from server into an HTML element
+            document.getElementById("messageBx").innerHTML = this.responseText;
+        }
+    };
+    
+    // Retrieving the form data
+    var subForm = document.getElementById("subForm");
+    var formData = new FormData(subForm);
+
+    // Sending the request to the server
+    request.send(formData);
+}
+
+          function contact() {
+    // Creating the XMLHttpRequest object
+    var request = new XMLHttpRequest();
+    
+    // Instantiating the request object
+    request.open("POST", "contactDb.php");
+    
+    // Defining event listener for readystatechange event
+    request.onreadystatechange = function() {
+        // Check if the request is compete and was successful
+        if(this.readyState === 4 && this.status === 200) {
+            // Inserting the response from server into an HTML element
+            document.getElementById("feedResponse").innerHTML = this.responseText;
+        }
+    };
+    
+    // Retrieving the form data
+    var contactForm = document.getElementById("contactForm");
+    var formData = new FormData(contactForm);
+
+    // Sending the request to the server
+    request.send(formData);
+}
+        </script>
         <!-- <script src="js/jquery.min.js"></script>
         <script src="js/jquery-3.0.0.min.js"></script>
         <script src="js/jquery.validate.js"></script> -->
